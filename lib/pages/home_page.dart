@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:searchbar/utils/search_bar.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  //final controller;
+  HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -10,6 +12,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold(
+      body: SafeArea(
+        child: SearchBar(),
+      ),
+    );
   }
 }
