@@ -8,15 +8,47 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
+  late final controller = TextEditingController();
+  //Lista de sugestões de pesquisa
+  List<String> searchTerms = [
+    "Apple",
+    "Banana",
+    "Mango",
+    "Pear",
+    "Watermelons",
+    "Blueberries",
+    "Pineapples",
+    "Strawberries"
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(30),
-      padding: const EdgeInsets.fromLTRB(15, 8, 10, 8),
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
       decoration: BoxDecoration(
           color: Colors.grey[200], borderRadius: BorderRadius.circular(20)),
-      child: const TextField(
-        decoration: InputDecoration(
+      child: TextField(
+        onSubmitted: (value) {
+          setState(() {
+            List<String> matchQuery = [];
+            for (var terms in searchTerms) {
+              if (terms.toLowerCase().contains(controller.text.toLowerCase())) {
+                matchQuery.add(terms);
+                Container(
+                  height: 300,
+                  width: 200,
+                  //child: Text(matchQuery[]),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                  ),
+                );
+              }
+            }
+          });
+        },
+        controller: controller,
+        decoration: const InputDecoration(
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
           ),
