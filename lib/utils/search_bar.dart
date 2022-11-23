@@ -41,7 +41,7 @@ class _SearchBarState extends State<SearchBar> {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.fromLTRB(20, 80, 20, 0),
+          margin: const EdgeInsets.fromLTRB(25, 80, 25, 0),
           padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
           decoration: BoxDecoration(
               color: Colors.grey[300], borderRadius: BorderRadius.circular(20)),
@@ -78,7 +78,7 @@ class _SearchBarState extends State<SearchBar> {
                   itemCount: matchQuery.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      contentPadding: const EdgeInsets.fromLTRB(25, 0, 15, 0),
+                      contentPadding: const EdgeInsets.fromLTRB(30, 0, 15, 0),
                       title: Text(
                         matchQuery[index],
                         style: TextStyle(
