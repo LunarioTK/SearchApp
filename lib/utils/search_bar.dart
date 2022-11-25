@@ -9,6 +9,7 @@ class SearchBar extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBar> {
   late final controller = TextEditingController();
+  bool _visible = false;
   List<String> matchQuery = [];
   //Lista de sugestões de pesquisa
   List<String> searchTerms = [
@@ -51,75 +52,89 @@ class _SearchBarState extends State<SearchBar> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: TextField(
-            onChanged: (value) => findMatch(),
+            onChanged: (value) {
+              setState(() {
+                findMatch();
+                _visible = !_visible;
+              });
+            },
             controller: controller,
             style: const TextStyle(
               color: Colors.white,
             ),
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(
                 borderSide: BorderSide.none,
               ),
               hintText: 'Search...',
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                 fontSize: 18,
                 color: Colors.white,
               ),
-              prefixIcon: Icon(
+              prefixIcon: const Icon(
                 Icons.search,
                 size: 25,
                 color: Colors.white,
               ),
-              suffixIcon: Icon(
-                Icons.clear,
-                size: 25,
-                color: Colors.white,
+              suffixIcon: IconButton(
+                onPressed: () => controller.clear(),
+                icon: const Icon(
+                  Icons.clear,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
         ),
 
         //Mostrar a pesquisa
-        Expanded(
-          child: controller.text.isEmpty
-              ? Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                  ),
-                )
-              : searchTerms.isEmpty
-                  ? Center(
-                      child: Text(
-                        'No results found',
-                        style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 22.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: matchQuery.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(35, 0, 15, 0),
-                          onTap: () {
-                            setState(() {
-                              controller.text = matchQuery[index];
-                              matchQuery = [];
-                            });
-                          },
-                          title: Text(
-                            matchQuery[index],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                            ),
+        controller.text.isEmpty
+            ? Container()
+            : Expanded(
+                child: AnimatedOpacity(
+                  opacity: _visible ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 400),
+                  child: searchTerms.isEmpty
+                      ? Center(
+                          child: Text(
+                            'No results found',
+                            style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.bold),
                           ),
-                        );
-                      },
-                    ),
-        ),
+                        )
+                      : Container(
+                          margin: const EdgeInsets.fromLTRB(25, 5, 25, 50),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[300],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: ListView.builder(
+                            itemCount: matchQuery.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                contentPadding:
+                                    const EdgeInsets.fromLTRB(35, 0, 15, 0),
+                                onTap: () {
+                                  setState(() {
+                                    controller.text = matchQuery[index];
+                                    matchQuery = [];
+                                  });
+                                },
+                                title: Text(
+                                  matchQuery[index],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                ),
+              )
       ],
     );
   }
