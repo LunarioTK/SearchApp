@@ -104,8 +104,7 @@ class _SearchBarState extends State<SearchBar> {
                         ),
                       )
                     : Container(
-                        constraints: const BoxConstraints.tightFor(
-                          width: 500,
+                        constraints: const BoxConstraints.tightForFinite(
                           height: 200,
                         ),
                         margin: const EdgeInsets.fromLTRB(25, 5, 25, 50),
